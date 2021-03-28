@@ -7,6 +7,9 @@ class Author(models.Model):
     authorUser = models.OneToOneField(User, on_delete=models.CASCADE)
     authorRating = models.SmallIntegerField(default=0)
 
+    def __str__(self):
+        return f'{self.authorUser.username}'
+
     def update_rating(self):
         postRat = self.post_set.all().aggregate(postRating=Sum('rating'))
         pRat = 0
@@ -23,6 +26,9 @@ class Author(models.Model):
 class Category(models.Model):
     name = models.CharField(max_length=64, unique=True)
 
+    def __str__(self):
+        return f'{self.name}'
+
 
 class Post(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
@@ -38,6 +44,9 @@ class Post(models.Model):
     title = models.CharField(max_length=128)
     text = models.TextField()
     rating = models.SmallIntegerField(default=0)
+
+    def __str__(self):
+        return f'{self.title}: {self.text[:20]}'
 
     def like(self):
         self.rating += 1
@@ -64,7 +73,7 @@ class Comment(models.Model):
     rating = models.SmallIntegerField(default=0)
 
     def __str__(self):
-        return self.commentUser.username
+        return f'{self.commentUser.username}'
 
     def like(self):
         self.rating += 1
