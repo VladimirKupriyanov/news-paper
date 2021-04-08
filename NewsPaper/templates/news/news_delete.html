@@ -1,12 +1,10 @@
 {% extends 'flatpages/default.html' %}
-
 {% load custom_filters %}
 
-{% block title %}News{% endblock title %}
+{% block title %}Delete News{% endblock title %}
 
 {% block content %}
-<h1>Статья</h1>
-{% if post %}
+<h3>Вы действительно хотите удалить данную статью?</h3>
 <table>
     <tr>
         <td>
@@ -16,7 +14,7 @@
             Дата публикации
         </td>
         <td>
-            Текс статьи
+            Текст статьи
         </td>
     </tr>
     <tr>
@@ -31,7 +29,14 @@
         </td>
     </tr>
 </table>
-{% else %}
-<h2>Статей нет!</h2>
-{% endif %}
+
+<form method="POST">
+    {% csrf_token %}
+    <input type="submit" value="подтвердить">
+</form>
+
+<hr>
+<a href="/news/">Вернуться</a>
+<hr>
+
 {% endblock content %}
