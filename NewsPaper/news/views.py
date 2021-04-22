@@ -3,6 +3,7 @@ from django.views import View  # импортируем простую вьюш�
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.core.paginator import Paginator
 from datetime import datetime
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
 from .models import Post
 from .filters import PostFilter
@@ -16,7 +17,6 @@ class NewsList(ListView):
     # queryset = Post.objects.order_by('-id')
     ordering = ['-id']
     paginate_by = 10
-
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -51,19 +51,21 @@ class NewsDetail(DetailView):
     queryset = Post.objects.all()
 
 
-class NewsCreate(CreateView):
+class NewsCreate(PermissionRequiredMixin, CreateView):
+    permission_required = ('news.add_post',)
     template_name = 'news/news_create.html'
     form_class = PostForm
     success_url = '/news/'
 
 
 # дженерик для редактирования объекта
-class NewsUpdate(UpdateView):
+class NewsUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    permission_required = ('news.change_post',)
     template_name = 'news/news_update.html'
     form_class = PostForm
     success_url = '/news/'
 
-    # метод get_object мы используем вместо queryset, чтобы получить информацию об объекте который мы
+    # метод get_object используем вместо queryset, чтобы получить информацию об объекте который мы
     # собираемся редактировать
     def get_object(self, **kwargs):
         id = self.kwargs.get('pk')
