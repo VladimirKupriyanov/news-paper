@@ -1,0 +1,50 @@
+{% extends 'flatpages/default.html' %}
+{% load custom_filters %}
+
+{% block title %}Search News{% endblock title %}
+
+{% block content %}
+<h3>Поиск статей</h3>
+<!-- Перед таблицей добавим форму для поиска -->
+<form method="GET">
+    {{ filter.form }} <!-- Форму от фильтров за нас сделает django. А вот кнопку, увы придётся делать самому -->
+    <input type="submit" value="Найти">
+</form>
+
+{% if posts %}
+<table>
+    <tr>
+        <td>
+            Заголовок
+        </td>
+        <td>
+            Дата публикации
+        </td>
+        <td>
+            Автор
+        </td>
+    </tr>
+    {% for post in filter.qs %} <!-- поменяем products на filter.qs, т.к. теперь мы забираем уже отобранную по
+    каким-то параметрам информацию -->
+    <tr>
+        <td>
+            {{ post.title }}
+        </td>
+        <td>
+            {{ post.dateCreation|date:'d.m.Y' }}
+        </td>
+        <td>
+            {{ post.author }}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<h2>Новостей нет</h2>
+{% endif %}
+
+<hr>
+<a href="/news/">Вернуться</a>
+<hr>
+
+{% endblock content %}

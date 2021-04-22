@@ -21,7 +21,7 @@ def censor(value):
         value = value.lower().replace(',', '').replace('.', '')\
             .replace(':', '').replace(';', '').replace('!', '')\
             .replace('?', '').replace('_', ' ').split()
-        censorList = ['bacon', 'spicy', 'hamburger', 'text']
+        censorList = ['bacon', 'spicy', 'hamburger']
 
         result = []
         for i in value:

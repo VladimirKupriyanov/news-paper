@@ -1,0 +1,19 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+
+{% block title %}News{% endblock title %}
+
+{% block content %}
+<h3>{{ post.title|censor }}</h3>
+<hr>
+{{ post.text|censor }}
+<hr>
+<h6>Автор:{{ post.author }}</h6>
+<h6>Дата создания:{{ post.dateCreation|date:'d-m-y h:m' }}</h6>
+
+<hr>
+<a href="/news/">Вернуться</a>
+<hr>
+
+{% endblock content %}
